@@ -1,3 +1,9 @@
 parsel
 requests
 tqdm
+telebot
+aiogram
+python-telegram-bot
+numpy
+tqdm
+parsel

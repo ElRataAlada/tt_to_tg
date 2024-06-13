@@ -277,8 +277,8 @@ async def send_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 MY_ID = 543015172
 
-token = '7458133965:AAEpmdxPQbAJnsSOcmb7QPjco40w6wuUWjk'
-base_url = 'http://192.168.31.255:1488/bot'
+token = '7295842483:AAEQ5-zt-0HeB3gy52NYDYuJ7Db6Ub4W1-0'
+base_url = 'http://192.168.31.153:1488/bot'
 
 if __name__ == "__main__":
 

@@ -282,43 +282,36 @@ base_url = 'http://192.168.31.153:1488/bot'
 
 if __name__ == "__main__":
 
-    while True:
-        try:
-            result = requests.get(base_url)
+    result = requests.get(base_url)
 
-            if result.status_code != 404:
-                print("Сервер не запущен")
-                raise Exception("Сервер не запущен")
 
-            builder = Application.builder()
 
-            builder.token(token)
-            builder.base_url(base_url)
+    if result.status_code != 404:
+        print("Сервер запущен")
 
-            app = builder.build()
+        builder = Application.builder()
 
-            app.add_handler(CommandHandler("start", start))
-            app.add_handler(MessageHandler(filters.TEXT, send_text))
+        builder.token(token)
 
-            print("Бот запущен")
-            app.run_polling(timeout=1, drop_pending_updates=True)
+        app = builder.build()
 
-            print("Сервер запущен")
+        app.add_handler(CommandHandler("start", start))
+        app.add_handler(MessageHandler(filters.TEXT, send_text))
 
-            if requests.get(base_url).status_code != 404:
-                raise Exception("Сервер не запущен")
-        
-        except Exception as e:
-            print("Сервер не запущен\nПерехожу в режим работы через телеграмм\n\n")
-            
-            builder = Application.builder()
+        print("Бот запущен")
+        app.run_polling(drop_pending_updates=True)
 
-            builder.token(token)
+    else:
+        builder = Application.builder()
 
-            app = builder.build()
+        builder.token(token)
+        builder.base_url(base_url)
 
-            app.add_handler(CommandHandler("start", start))
-            app.add_handler(MessageHandler(filters.TEXT, send_text))
+        app = builder.build()
 
-            print("Бот запущен")
-            app.run_polling(timeout=1, drop_pending_updates=True)
+        app.add_handler(CommandHandler("start", start))
+        app.add_handler(MessageHandler(filters.TEXT, send_text))
+
+        print("Бот запущен")
+        app.run_polling(drop_pending_updates=True)
+    

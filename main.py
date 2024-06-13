@@ -1,10 +1,8 @@
-
-from telebot.types import InputMediaPhoto
 import os
 import re
 from aiogram.utils.markdown import hlink
 
-from telegram import Update 
+from telegram import Update, InputMediaPhoto
 from telegram.ext import ContextTypes, CommandHandler, MessageHandler, filters, Application
 
 import requests
@@ -76,12 +74,6 @@ def extract_metadata(url):
 def downloader(file_name, link, response, extension):
     file_size = int(response.headers.get("content-length", 0))
     folder_name, _ , content_type = extract_video_id(link)
-
-    if os.path.exists(folder_name):
-        for file in os.listdir(folder_name):
-            os.remove(f"{folder_name}/{file}")
-
-        os.rmdir(folder_name)
 
     if not os.path.exists(folder_name):
         os.mkdir(folder_name)
@@ -157,7 +149,7 @@ def download_v2(link):
                 folder_name = downloader(file_name, link, response, extension="mp4")
             else:
                 download_links = selector.xpath('//div[@class="card-image"]/img/@src').getall()
-                
+
                 for index, download_link in enumerate(download_links):
                     response = s.get(download_link, stream=True, headers=headers)
                     folder_name = downloader(f"{file_name}_{index}", link, response, extension="jpeg")
@@ -203,6 +195,7 @@ def download_v1(link):
                 downloader(file_name, link, response, extension="mp4")
             else:
                 download_links = selector.css('.card-img-top::attr(src)').getall()
+
                 for index, download_link in enumerate(download_links):
                     response = s.get(download_link, stream=True, headers=headers)
 
@@ -225,16 +218,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def send_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
-
-    sender_username = message.from_user.username
-    bot = context.bot
-
-    chat_id = update.effective_chat.id
-    link = hlink('Cсылка на видео', message.text)
     
     if re.compile('https://[a-zA-Z]+.tiktok.com/').match(message.text):
-
         try:
+            sender_username = message.from_user.username
+            bot = context.bot
+
+            chat_id = update.effective_chat.id
+            link = hlink('Cсылка на видео', message.text)
+            caption = f'Отправил: @{sender_username}\n\n{link}'
+
             tiktok_link = message.text
 
             folder_name, content_type = download_v2(tiktok_link)
@@ -243,24 +236,18 @@ async def send_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 filename = os.listdir(folder_name)[0]   
 
                 with open(f'{folder_name}/{filename}', 'rb') as video:
-                    caption = f'Отправил: @{sender_username}\n\n{link}'
                     await bot.sendVideo(chat_id, video, supports_streaming=True, disable_notification=None, caption=caption, parse_mode='HTML')
 
                 os.remove(f'{folder_name}/{filename}')
                 os.rmdir(f'{folder_name}')
 
             elif content_type == "photo":
-                photos_list = [open(f'{folder_name}/{photo}', 'rb') for photo in os.listdir(folder_name)]
+                photos = []
 
-                photos = [InputMediaPhoto(media=photo) for photo in photos_list]
+                for photo in os.listdir(folder_name):
+                    photos.append(InputMediaPhoto(media=open(f'{folder_name}/{photo}', 'rb')))
 
-                caption = f'Отправил: @{sender_username}\n\n{link}'
-
-                await bot.sendMediaGroup(chat_id, photos, disable_notification=None)
-                await bot.sendMessage(chat_id, caption, parse_mode='HTML')
-
-                for photo in photos_list:
-                    photo.close()
+                await bot.sendMediaGroup(chat_id, photos, disable_notification=None, caption=caption, parse_mode='HTML')
 
                 for photo in os.listdir(folder_name):
                     os.remove(f'{folder_name}/{photo}')
@@ -272,23 +259,19 @@ async def send_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except Exception as e:
             print(e)
 
-            await bot.sendMessage(MY_ID, f"Ошибка: {e}")
+            await bot.sendMessage(MY_ID, f"Ошибка: {e.__str__()}")
 
 
-MY_ID = 543015172
+MY_ID = 7344659725
 
 token = '7295842483:AAEQ5-zt-0HeB3gy52NYDYuJ7Db6Ub4W1-0'
-base_url = 'http://192.168.31.153:1488/bot'
+base_url = 'http://192.168.31.153:1337/bot'
 
 if __name__ == "__main__":
 
     result = requests.get(base_url)
 
-
-
     if result.status_code != 404:
-        print("Сервер запущен")
-
         builder = Application.builder()
 
         builder.token(token)
@@ -302,6 +285,7 @@ if __name__ == "__main__":
         app.run_polling(drop_pending_updates=True)
 
     else:
+        print("Сервер запущен")
         builder = Application.builder()
 
         builder.token(token)

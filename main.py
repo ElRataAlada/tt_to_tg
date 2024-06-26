@@ -32,7 +32,8 @@ def extract_video_id(url):
     if 'vm.tiktok.com' in url:
         response = requests.get(url, headers=headers)
         url = response.url
-
+        print(response.content)
+    
     username_pattern = r"@([A-Za-z0-9_.]+)"
     content_type_pattern = r"/(video|photo)/(\d+)"
 
@@ -215,6 +216,8 @@ def download_v1(link):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Отправь ссылку на видео с tiktok и получи видео")
 
+async def id(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Твой id: `{update.effective_chat.id}`", parse_mode="MarkdownV2")
 
 async def send_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
@@ -294,6 +297,7 @@ if __name__ == "__main__":
         app = builder.build()
 
         app.add_handler(CommandHandler("start", start))
+        app.add_handler(CommandHandler("id", id))
         app.add_handler(MessageHandler(filters.TEXT, send_text))
 
         print("Бот запущен")

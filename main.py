@@ -660,11 +660,11 @@ async def send_text_inner(update: Update, context: ContextTypes.DEFAULT_TYPE):
             video = await download_v1(tt_link)
 
             if chat_type == 'group' or chat_type == 'supergroup':
-                await bot.sendVideo(chat_id, video, supports_streaming=True, disable_notification=True, caption=caption, parse_mode='HTML')
+                await bot.sendVideo(chat_id, video, supports_streaming=True, disable_notification=True, caption=caption, parse_mode='HTML',pool_timeout=200000,connect_timeout=200000,read_timeout=200000,write_timeout=200000)
                 await bot.deleteMessage(chat_id, message.message_id)
 
             elif chat_type == 'private':
-                await bot.sendVideo(chat_id, video, supports_streaming=True, disable_notification=True, reply_to_message_id=message.message_id)
+                await bot.sendVideo(chat_id, video, supports_streaming=True, disable_notification=True, reply_to_message_id=message.message_id,pool_timeout=200000,connect_timeout=200000,read_timeout=200000,write_timeout=200000)
 
         except Exception as e:
             print(f"{Colors.red('Error')}: {e}")

@@ -7,3 +7,9 @@ python-telegram-bot
 numpy
 tqdm
 parsel
+moviepy==1.0.3
+pytube
+pytubefix
+hurry.filesize
+asyncio
+get-video-properties

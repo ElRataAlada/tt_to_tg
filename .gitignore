@@ -1,0 +1,5 @@
+.vs
+.telegram-bot-api
+
+tqueue.binlog
+webhooks_db.binlog

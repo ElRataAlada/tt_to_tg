@@ -1,0 +1,1 @@
+.\telegram-bot-api\bin\telegram-bot-api.exe --api-id=11752929 --api-hash=d20a3d3e25c7119e061cf3ef1e02bf5b --http-port=1337

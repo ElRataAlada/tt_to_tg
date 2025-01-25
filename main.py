@@ -623,7 +623,7 @@ async def send_text_inner(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(f"Received: {message.text}")
         index = message.text.find("tiktok.com/") + 9 + len("tiktok.com/") 
         tt_link = message.text[0:index]
-        subtext = message.text[index:].strip()
+        subtext = message.text[index+1:].strip()
         
         banned, ban_time = is_banned(chat_id, sender_username)
 

@@ -2,6 +2,7 @@ parsel
 requests
 tqdm
 telebot
+telethon
 aiogram
 python-telegram-bot
 numpy

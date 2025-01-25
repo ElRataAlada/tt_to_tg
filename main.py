@@ -210,7 +210,7 @@ async def download_v1(link):
                 video.name = 'video.mp4'
 
                 time_end = time.time()
-                print(f"{Colors.blue(link)} downloaded {Colors.green("successfully")}. Time: {Colors.yellow(round((time_end - time_start), 2))} {Colors.yellow("s")}")
+                print(f"{Colors.blue(link)} downloaded {Colors.green('successfully')}. Time: {Colors.yellow(round((time_end - time_start), 2))} {Colors.yellow('s')}")
 
                 return video
 
@@ -688,7 +688,7 @@ async def send_text_inner(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await bot.sendVideo(chat_id, video, supports_streaming=True, disable_notification=True, reply_to_message_id=message.message_id)
 
         except Exception as e:
-            print(f"{Colors.red("Error")}: {e}")
+            print(f"{Colors.red('Error')}: {e}")
 
 
 
@@ -737,7 +737,7 @@ async def debtors(event):
                 await client.delete_messages(entity=HOHOL_CHAT_ID, message_ids=[message.id])
 
             except Exception as e:
-                print(f"{Colors.red("Error")}: {e}")
+                print(f"{Colors.red('Error')}: {e}")
                 return
 
 

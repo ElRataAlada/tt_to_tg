@@ -116,7 +116,7 @@ async def download_v1(link):
               video.name = 'video.mp4'
 
               time_end = time.time()
-              print(f"{Colors.blue(link)} downloaded {Colors.green("successfully")}. Time: {Colors.yellow(round((time_end - time_start), 2))} {Colors.yellow("s")}")
+              print(f"{Colors.blue(link)} downloaded {Colors.green('successfully')}. Time: {Colors.yellow(round((time_end - time_start), 2))} {Colors.yellow('s')}")
 
               return video
             else:

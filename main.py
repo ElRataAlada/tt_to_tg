@@ -577,10 +577,10 @@ async def handle_quality_selection(update: Update, context: ContextTypes.DEFAULT
         parse_mode="HTML",
         width=props["width"],
         height=props["height"],
-        write_timeout=1000,
-        read_timeout=1000,
-        pool_timeout=1000,
-        connect_timeout=1000,
+        write_timeout=20000,
+        read_timeout=20000,
+        pool_timeout=20000,
+        connect_timeout=20000,
     )
 
     await context.bot.delete_message(chat_id=update.effective_chat.id, message_id=new_message.message_id)

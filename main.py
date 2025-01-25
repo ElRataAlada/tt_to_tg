@@ -59,18 +59,17 @@ def extract_video_id(url):
   response = requests.get(url, headers=headers)
   url = response.url
 
-  print(url)
-
-  parts = url.split("/")
-
-  if "video" in parts:
-    index = parts.index("video")
+  if url.find('video'):
+    start = url.find('video')
+    end = url[start:].find('?')
+    video_id = url[start:end]
     content_type = "video"
   else:
-    index = parts.index("photo")
+    start = url.find('photo')
+    end = url[start:].find('?')
+    video_id = url[start:end]
     content_type = "photo"
 
-  video_id = parts[index + 1].split("?")[0]
   return content_type, video_id
 
 def split(arr, size):

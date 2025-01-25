@@ -618,32 +618,6 @@ async def send_text_inner(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id="-1002005871510", text=" ".join(text))
                     
         return
-      
-    if re.compile("https://youtube.com/").match(message.text):
-      print(f"Received: {message.text}")
-
-      url = message.text.split("\n")[0]
-      
-      yt = YouTube(url, allow_oauth_cache=True, use_oauth=False)
-      
-      streams = yt.streams.filter(type="video", file_extension="mp4").order_by("resolution")
-
-      for stream in yt.streams:
-        print(stream)
-
-      qualities = [stream.resolution for stream in streams] 
-      
-      qualities = list(set(qualities))
-      qualities.sort(key=lambda x: int(x[:-1]))
-      
-      keys = [{"text": f"{quality}", "callback_data": f"{message.message_id}:{quality}:{url.split(".com/")[1]}"} for quality in qualities]
-      
-      keys = split(keys, 4)
-      keys.append([{"text": "❌ Отмена", "callback_data": "cancel"}])
-      
-      await context.bot.send_message(chat_id=update.effective_chat.id, reply_to_message_id=message.message_id, 
-                                      text="Выберите качество видео",
-                                      reply_markup={"inline_keyboard": keys})
 
     elif re.compile('https://[a-zA-Z]+.tiktok.com/').match(message.text):
         print(f"Received: {message.text}")

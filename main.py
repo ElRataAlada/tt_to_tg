@@ -87,7 +87,7 @@ async def download_v1(link):
             selector = Selector(text=response)
 
             if content_type == "video":
-              download_link_index = 3 if args.watermark else 0
+              download_link_index = 0
               download_link = selector.css('.downtmate-right.is-desktop-only.right a::attr(href)').getall()[download_link_index]
 
               response = s.get(download_link, headers=headers)

@@ -59,7 +59,7 @@ def extract_video_id(url):
   response = requests.get(url, headers=headers)
   url = response.url
 
-  if url.find('video'):
+  if url.find('video') != -1:
     start = url.find('video')
     end = url[start:].find('?')
     video_id = url[start:end]
